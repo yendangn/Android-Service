@@ -156,3 +156,8 @@ The log:
 09-18 21:12:22.978 9259-9259/yendangn.com.androidsercice D/TAG: onDestroy
 ```
 ```onDestroy``` was called, yeah yeah, I can stop it.
+
+
+##### If I run 10 services same time, and just stop one of them. What happen? The orther service still run or all service will be stopped?
+
+##### As you know, service run on main thread. But why I kill app, service still run on background. Hmmm
