@@ -52,5 +52,19 @@ You can see, first the service will call onCreate to create new instance of serv
 ```
 
 onCreate doesn't call. The new service just call onStartCommand. Hmmmmm
-When you start a service, Android OS will check that if your service still not have any instance in running before, Android will create a new instance for service. Else, Android NOT CREATE a new instance , just call onStartCommand to excute new task.
+When you start a service, Android OS will check that if your service still not have any instance in running before, Android will create a new instance for service. Else, Android DON'T CREATE a new instance , just call onStartCommand to excute new task.
+
+#### And what happen if I stop a service
+```java
+
+    private void stopService() {
+        Intent intent = new Intent(this, MyService.class);
+        stopService(intent);
+    }
+```
+The log will be:
+```
+09-18 18:48:56.509 6293-6293/yendangn.com.androidsercice D/TAG: onDestroy
+```
+onDestroy will be called. 
 
