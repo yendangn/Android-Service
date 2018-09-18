@@ -30,7 +30,7 @@
         super.onDestroy();
     }
 ```
-I will try to log the message on each function: onStartCommand, onCreate, onDestroy. And there is the result when I start this service on activity
+I will try to log the message on each function: ```onStartCommand```, ```onCreate```, ```onDestroy```. And there is the result when I start this service on activity
 
 ```java
 private void startService() {
@@ -43,7 +43,7 @@ private void startService() {
 09-18 18:39:08.305 6293-6293/yendangn.com.androidsercice D/TAG: onCreate
 09-18 18:39:08.306 6293-6293/yendangn.com.androidsercice D/TAG: onStartCommand
 ```
-You can see, first the service will call onCreate to create new instance of service. Then, Started Service will call onStartCommand to get data from intent and excute the job.
+You can see, first the service will call ```onCreate``` to create new instance of service. Then, Started Service will call ```onStartCommand``` to get data from intent and excute the job.
 
 ##### And what happen if I start this service again? Let's see
 
@@ -51,10 +51,10 @@ You can see, first the service will call onCreate to create new instance of serv
 09-18 18:41:17.436 6293-6293/yendangn.com.androidsercice D/TAG: onStartCommand
 ```
 
-onCreate doesn't call. The new service just call onStartCommand. Hmmmmm
-When you start a service, Android OS will check that if your service still not have any instance in running before, Android will create a new instance for service. Else, Android DON'T CREATE a new instance , just call onStartCommand to excute new task.
+```onCreate``` doesn't call. The new service just call ```onStartCommand```. Hmmmmm
+When you start a service, Android OS will check that if your service still not have any instance in running before, Android will create a new instance for service. Else, Android DON'T CREATE a new instance , just call ```onStartCommand``` to excute new task.
 
-#### And what happen if I stop a service
+##### And what happen if I stop a service
 ```java
 
     private void stopService() {
@@ -66,5 +66,26 @@ The log will be:
 ```
 09-18 18:48:56.509 6293-6293/yendangn.com.androidsercice D/TAG: onDestroy
 ```
-onDestroy will be called. 
+It's mean, when I stop the service, ```onDestroy``` will be called. 
 
+##### Service run on background. So it will run on Worker thread or Main Thread? 
+Ok, add some code to ```onStartCommand``` function
+
+```java
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        if(Looper.myLooper() == Looper.getMainLooper()) {
+            Logger.d("I am run on main thread");
+        } else {
+            Logger.d("No, I am run on worker thread");
+        }
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+```
+And see the log:
+```
+09-18 20:54:13.494 8517-8517/yendangn.com.androidsercice D/TAG: I am run on main thread
+```
+So, service run on main thread!
